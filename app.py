@@ -69,7 +69,6 @@ amount = st.number_input('Amount')
 # bar = st.slider("bar", 0, 100)
 
 if st.button("Add row"):
-    #new_entry = {"Person Who Paid": user_paid, "Person Who Owes": user_topay, "Item": item, "Amount": amount}
     new_entry = pd.DataFrame({
         "Person Who Paid": [user_paid],
         "Person Who Owes": [user_topay],
@@ -78,7 +77,6 @@ if st.button("Add row"):
     })
     new_entry = pd.DataFrame(new_entry)
     data = pd.concat([data, new_entry], axis=0)
-    #data = data.append({"Person Who Paid": user_paid, "Person Who Owes": user_topay, "Item": item, "Amount": amount}, ignore_index=True)
     save_data(data)
     st.write("Owed money successfully added.")
 
@@ -102,5 +100,4 @@ if st.button("Calculate payments"):
     for (payer, receiver), balance in balances.items():
         if balance < 0:
             st.write(receiver, "owes", payer, "€", round(-balance, 2))
-
 
