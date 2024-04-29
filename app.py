@@ -71,7 +71,7 @@ amount = st.number_input('Amount')
 if st.button("Add row"):
     #new_entry = {"Person Who Paid": user_paid, "Person Who Owes": user_topay, "Item": item, "Amount": amount}
     new_entry = pd.DataFrame([user_paid,user_topay,item,amount])
-    data = pd.concat([data, new_entry], ignore_index=True)
+    data = pd.concat([data, new_entry], axis=0)
     #data = data.append({"Person Who Paid": user_paid, "Person Who Owes": user_topay, "Item": item, "Amount": amount}, ignore_index=True)
     save_data(data)
     st.write("Owed money successfully added.")
