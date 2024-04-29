@@ -16,13 +16,16 @@ footer {visibility: hidden;}
 # Text on page
 st.markdown("<h1 style='text-align: center; color: black;'>Payments App</h1>", unsafe_allow_html=True)
 ### st.markdown("<h1 style='font-size: 1em; text-align: center; color: black;'>XXX</h1>", unsafe_allow_html=True)
-
+   
 # Function to load data from CSV file
 def load_data():
     if os.path.exists("data.csv"):
         return pd.read_csv("data.csv")
     else:
         return pd.DataFrame(columns=["Person Who Paid", "Person Who Owes", "Item", "Amount"])
+    
+# Load CSV of payments data
+data = load_data()
 
 # Function to save data to CSV file
 def save_data(data):
@@ -36,10 +39,8 @@ def new_user():
 if 'data' not in st.session_state:
     st.session_state.data = new_user()
 
-# Load CSV of payments data
-data = load_data()
 
-delete_row = st.number_input("Delete entry by typing row number:", step=None, value=None)
+delete_row = st.number_input("Delete entry by typing row num:", step=None, value=None)
 if delete_row:
     # Convert delete_row to integer assuming it's an index
     delete_row_index = int(delete_row)
@@ -100,4 +101,3 @@ if st.button("Calculate payments"):
     for (payer, receiver), balance in balances.items():
         if balance < 0:
             st.write(receiver, "owes", payer, "€", round(-balance, 2))
-
