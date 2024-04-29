@@ -39,7 +39,15 @@ if 'data' not in st.session_state:
 # Load CSV of payments data
 data = load_data()
 
-
+delete_row = st.number_input("Delete entry by typing row number:", step=None, value=None)
+if delete_row:
+    # Convert delete_row to integer assuming it's an index
+    delete_row_index = int(delete_row)
+    # Remove the row at the specified index
+    data = data.drop(delete_row_index)
+    # Save the modified data
+    save_data(data)
+    st.write("Entry ", delete_row_index, " successfully deleted.")
 
 user = st.text_input("Input New User")
 
@@ -65,19 +73,25 @@ if st.button("Add row"):
     save_data(data)
     st.write("Owed money successfully added.")
 
-if st.button("Delete payments"):
-    data = pd.DataFrame(columns=["Person Who Paid", "Person Who Owes", "Item", "Amount"])
-    save_data(data)
-    st.write("Saved payments successfully deleted.")
-
 if not data.empty:
     st.write(data)
 
-# Iterate over each row in the DataFrame
 if st.button("Calculate payments"):
-    for i in range(len(data)-1):
-        for j in range(len(data)):
-            # Check if 'Person Who Paid' in row i is equal to 'Person Who Owes' in row i+j
-            if data.loc[i, 'Person Who Paid'] == data.loc[i+j, 'Person Who Owes'] and data.loc[i+j, 'Person Who Paid'] == data.loc[i, 'Person Who Owes']:
-                total = data.loc[i+j,'Amount'] - data.loc[i,'Amount']
-                st.write(data['Person Who Owes'][i+j], "owes €", total, "to", data['Person Who Paid'][i+j])
+    # Initialize a dictionary to store the balances for each pair
+    balances = {}
+    
+    for index, row in data.iterrows():
+        payer = row['Person Who Paid']
+        receiver = row['Person Who Owes']
+        amount = row['Amount']
+        
+        # Update the balances dictionary
+        balances[(payer, receiver)] = balances.get((payer, receiver), 0) - amount
+        balances[(receiver, payer)] = balances.get((receiver, payer), 0) + amount
+
+    # Figure out who owes whom
+    for (payer, receiver), balance in balances.items():
+        if balance < 0:
+            st.write(receiver, "owes", payer, "€", round(-balance, 2))
+
+
