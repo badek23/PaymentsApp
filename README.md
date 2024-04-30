@@ -10,4 +10,6 @@ The original project is coded in Python. Libraries used include: ğŸ¼pandas | ğŸ
 The deployed app URL is: https://payments.streamlit.app/
 
 ### Files
-app.py: The script for the deployed app
+- app.py: The script for the deployed app
+- data.csv: CSV where input data is saved
+- .streamlit: Folder for configuration of theme of deployed app
