@@ -1,8 +1,2 @@
-Person Who Paid,Person Who Owes,Item,Amount
-Hannah,Kate,Cabify,15.42
-Gabe,Vale,Dénia,117.41
-Gabe,Cesar,Dénia,117.41
-Gabe,Kate,Dénia,117.41
-Vale,Kate,Bebidas,10.52
-Gabe,Johan,Dénia,117.41
-Johan,Vale,pelí,4.67
+Payer,Ower,Item,Amount
+Hannah,Kate,food,15.0

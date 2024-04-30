@@ -22,7 +22,7 @@ def load_data():
     if os.path.exists("data.csv"):
         return pd.read_csv("data.csv")
     else:
-        return pd.DataFrame(columns=["Person Who Paid", "Person Who Owes", "Item", "Amount"])
+        return pd.DataFrame(columns=["Payer", "Ower", "Item", "Amount"])
     
 # Load CSV of payments data
 data = load_data()
@@ -71,8 +71,8 @@ amount = st.number_input('Amount')
 
 if st.button("Add row"):
     new_entry = pd.DataFrame({
-        "Person Who Paid": [user_paid],
-        "Person Who Owes": [user_topay],
+        "Payer": [user_paid],
+        "Ower": [user_topay],
         "Item": [item],
         "Amount": [amount]
     })
@@ -84,19 +84,20 @@ if st.button("Add row"):
 if not data.empty:
     st.write(data)
 
+
 if st.button("Calculate payments"):
     # Initialize a dictionary to store the balances for each pair
     balances = {}
     
     for index, row in data.iterrows():
-        payer = row['Person Who Paid']
-        receiver = row['Person Who Owes']
+        payer = row['Payer']
+        receiver = row['Ower']
         amount = row['Amount']
         
         # Update the balances dictionary
         balances[(payer, receiver)] = balances.get((payer, receiver), 0) - amount
         balances[(receiver, payer)] = balances.get((receiver, payer), 0) + amount
-
+    #total = {}
     # Figure out who owes whom
     for (payer, receiver), balance in balances.items():
         if balance < 0:
